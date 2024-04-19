@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ptit_quiz_frontend/config/go_router/app_router.dart';
+import 'package:ptit_quiz_frontend/core/router/app_router.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      routerConfig: AppRouter.router,
+      routerConfig: AppRouter.appRouter,
     );
   }
 }
