@@ -1,5 +1,4 @@
-import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
-
+import '../entities/exam.dart';
 import '../repositories/exam_repository.dart';
 
 class GetExam {

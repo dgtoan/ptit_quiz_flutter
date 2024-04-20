@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ptit_quiz_frontend/domain/entities/account.dart';
-import 'package:ptit_quiz_frontend/domain/entities/profile.dart';
-import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 
+import '../../../domain/entities/account.dart';
+import '../../../domain/entities/profile.dart';
 import '../../../domain/usecases/admin_login.dart';
 import '../../../domain/usecases/login.dart';
 import '../../../domain/usecases/register.dart';
@@ -34,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
     emit(const AuthStateLoading());
     try {
-      final response = await _login(event.account);
+      await _login(event.account);
       emit(const AuthStateAuthenticated());
     } catch (e) {
       emit(AuthStateError(message: e.toString()));
@@ -44,7 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onAdminLogin(AuthAdminLoginEvent event, Emitter<AuthState> emit) async {
     emit(const AuthStateLoading());
     try {
-      final response = await _adminLogin(event.account);
+      await _adminLogin(event.account);
       emit(const AuthStateAdminAuthenticated());
     } catch (e) {
       emit(AuthStateError(message: e.toString()));
@@ -54,7 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onRegister(AuthRegisterEvent event, Emitter<AuthState> emit) async {
     emit(const AuthStateLoading());
     try {
-      final response = await _register(event.account, event.profile);
+      await _register(event.account, event.profile);
       emit(const AuthStateAuthenticated());
     } catch (e) {
       emit(AuthStateError(message: e.toString()));

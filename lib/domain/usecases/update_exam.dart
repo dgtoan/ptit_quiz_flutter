@@ -1,6 +1,5 @@
-import 'package:ptit_quiz_frontend/data/models/exam_model.dart';
-import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
-import 'package:ptit_quiz_frontend/domain/repositories/exam_repository.dart';
+import '../entities/exam.dart';
+import '../repositories/exam_repository.dart';
 
 class UpdateExam {
   final ExamRepository _examRepository;

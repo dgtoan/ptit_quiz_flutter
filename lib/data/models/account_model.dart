@@ -1,4 +1,4 @@
-import 'package:ptit_quiz_frontend/domain/entities/account.dart';
+import '../../domain/entities/account.dart';
 
 class AccountModel extends Account {
   AccountModel({

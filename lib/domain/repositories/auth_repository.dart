@@ -1,6 +1,3 @@
-import 'package:ptit_quiz_frontend/data/models/account_model.dart';
-import 'package:ptit_quiz_frontend/data/models/profile_model.dart';
-
 import '../entities/account.dart';
 import '../entities/profile.dart';
 

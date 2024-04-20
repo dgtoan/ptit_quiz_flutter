@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ptit_quiz_frontend/domain/usecases/get_exam.dart';
-import 'package:ptit_quiz_frontend/domain/usecases/get_exams.dart';
 
 import '../../../domain/entities/exam.dart';
 import '../../../domain/usecases/create_exam.dart';
 import '../../../domain/usecases/delete_exam.dart';
 import '../../../domain/usecases/update_exam.dart';
+import '../../../domain/usecases/get_exams.dart';
+import '../../../domain/usecases/get_exam.dart';
 
 part 'exam_event.dart';
 part 'exam_state.dart';
@@ -71,7 +71,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
   Future<void> _onDeleteExam(DeleteExamEvent event, Emitter<ExamState> emit) async {
     emit(const ExamStateLoading());
     try {
-      final response = await _deleteExam(event.id);
+      await _deleteExam(event.id);
       emit(ExamStateDeleted());
     } catch (e) {
       emit(ExamStateError(message: e.toString()));

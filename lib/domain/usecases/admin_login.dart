@@ -1,7 +1,5 @@
-import 'package:ptit_quiz_frontend/domain/entities/account.dart';
-import 'package:ptit_quiz_frontend/domain/repositories/auth_repository.dart';
-
-import '../../data/models/account_model.dart';
+import '../entities/account.dart';
+import '../repositories/auth_repository.dart';
 
 class AdminLogin {
   final AuthRepository _authRepository;

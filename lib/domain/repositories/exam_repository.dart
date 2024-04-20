@@ -1,6 +1,4 @@
-import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
-
-import '../../data/models/exam_model.dart';
+import '../entities/exam.dart';
 
 abstract class ExamRepository {
   Future<Exam> createExam(Exam exam);

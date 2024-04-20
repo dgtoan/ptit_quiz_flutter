@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:ptit_quiz_frontend/data/models/account_model.dart';
-import 'package:ptit_quiz_frontend/data/models/exam_model.dart';
-import 'package:ptit_quiz_frontend/data/models/profile_model.dart';
-import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
+import '../models/account_model.dart';
+import '../models/exam_model.dart';
+import '../models/profile_model.dart';
+import '../../domain/entities/exam.dart';
 
 abstract class RemoteData {
   Future<Map<String, dynamic>> login(AccountModel user);

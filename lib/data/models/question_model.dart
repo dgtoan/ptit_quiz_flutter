@@ -1,4 +1,4 @@
-import 'package:ptit_quiz_frontend/domain/entities/question.dart';
+import '../../domain/entities/question.dart';
 
 class QuestionModel extends Question {
   QuestionModel({

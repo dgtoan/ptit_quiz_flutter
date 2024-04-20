@@ -1,6 +1,5 @@
-import 'package:ptit_quiz_frontend/data/models/account_model.dart';
-import 'package:ptit_quiz_frontend/domain/entities/account.dart';
-import 'package:ptit_quiz_frontend/domain/repositories/auth_repository.dart';
+import '../entities/account.dart';
+import '../repositories/auth_repository.dart';
 
 class Login {
   final AuthRepository _authRepository;

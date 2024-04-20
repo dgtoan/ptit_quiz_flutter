@@ -1,9 +1,7 @@
-
-import 'package:ptit_quiz_frontend/data/models/account_model.dart';
-import 'package:ptit_quiz_frontend/data/models/profile_model.dart';
-import 'package:ptit_quiz_frontend/domain/entities/account.dart';
-import 'package:ptit_quiz_frontend/domain/entities/profile.dart';
-
+import '../models/account_model.dart';
+import '../models/profile_model.dart';
+import '../../domain/entities/account.dart';
+import '../../domain/entities/profile.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../providers/local_data.dart';
 import '../providers/remote_data.dart';

@@ -1,6 +1,5 @@
-import 'package:ptit_quiz_frontend/data/models/exam_model.dart';
-import 'package:ptit_quiz_frontend/data/providers/remote_data.dart';
-
+import '../models/exam_model.dart';
+import '../providers/remote_data.dart';
 import '../../domain/entities/exam.dart';
 import '../../domain/repositories/exam_repository.dart';
 
