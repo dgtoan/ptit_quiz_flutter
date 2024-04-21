@@ -30,6 +30,7 @@ class AuthRegisterEvent extends AuthEvent {
 }
 
 class AuthLogoutEvent extends AuthEvent {
+  const AuthLogoutEvent();
   @override
   List<Object> get props => [];
 }

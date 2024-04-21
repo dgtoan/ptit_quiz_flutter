@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/account.dart';
@@ -14,20 +15,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   late Login _login;
   late Register _register;
   late AdminLogin _adminLogin;
+  late Stream<bool> _authSubscription;
 
   AuthBloc({
     required Login login,
     required Register register,
     required AdminLogin adminLogin,
+    required Stream<bool> authSubscription,
   }) : super(const AuthStateUnauthenticated()) {
     _login = login;
     _register = register;
     _adminLogin = adminLogin;
+    _authSubscription = authSubscription;
 
     on<AuthLoginEvent>(_onLogin);
     on<AuthAdminLoginEvent>(_onAdminLogin);
     on<AuthRegisterEvent>(_onRegister);
     on<AuthLogoutEvent>(_onLogout);
+
+    _authSubscription.listen((isAuthenticated) {
+      if (!isAuthenticated) {
+        add(const AuthLogoutEvent());
+      }
+    });
   }
 
   Future<void> _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
@@ -35,8 +45,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _login(event.account);
       emit(const AuthStateAuthenticated());
-    } catch (e) {
-      emit(AuthStateError(message: e.toString()));
+    } on DioException catch (e) {
+      emit(AuthStateError(message: e.response?.data['message'] ?? e.toString()));
     }
   }
 
@@ -45,8 +55,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _adminLogin(event.account);
       emit(const AuthStateAdminAuthenticated());
-    } catch (e) {
-      emit(AuthStateError(message: e.toString()));
+    } on DioException catch (e) {
+      emit(AuthStateError(message: e.response?.data['message'] ?? e.toString()));
     }
   }
 
@@ -55,8 +65,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _register(event.account, event.profile);
       emit(const AuthStateAuthenticated());
-    } catch (e) {
-      emit(AuthStateError(message: e.toString()));
+    } on DioException catch (e) {
+      emit(AuthStateError(message: e.response?.data['message'] ?? e.toString()));
     }
   }
 

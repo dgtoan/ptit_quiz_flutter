@@ -64,7 +64,8 @@ class RemoteDataImpl implements RemoteData {
       },
     );
     switch (response.statusCode) {
-      case 201:
+      case 200:
+      case 204:
         return {"access_token": response.data["access_token"], "refresh_token": response.data["refresh_token"]};
       default:
         throw DioException(
@@ -74,8 +75,6 @@ class RemoteDataImpl implements RemoteData {
         );
     }
   }
-
-  // TODO: implement logout
 
   @override
   Future<ExamModel> createExam(ExamModel exam) async {
