@@ -80,11 +80,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       Expanded(
                         child: Center(
                           child: Container(
-                            constraints: const BoxConstraints(maxWidth: 540),
+                            constraints: BoxConstraints(
+                              maxWidth: 540,
+                              minHeight: size.height
+                            ),
                             child: Padding(
-                              padding: const EdgeInsets.all(32.0),
-                              child: Column(children: [
-                                SizedBox(height: size.height * 0.25),
+                              padding: const EdgeInsets.all(40.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                const SizedBox(height: 10),
                                 const PtitLogo(),
                                 const SizedBox(height: 24),
                                 Text(
@@ -280,7 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: size.height * 0.25),
+                                const SizedBox(height: 10),
                               ]),
                             ),
                           ),

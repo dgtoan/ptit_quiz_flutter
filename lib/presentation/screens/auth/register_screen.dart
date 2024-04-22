@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ptit_quiz_frontend/core/constants/data_key.dart';
 import 'package:ptit_quiz_frontend/core/router/app_router.dart';
-import 'package:ptit_quiz_frontend/di.dart';
 import 'package:ptit_quiz_frontend/domain/entities/account.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_text_field.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/devider_with_text.dart';
-import 'package:ptit_quiz_frontend/presentation/screens/widgets/outline_button_icon.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/ptit_logo.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../core/utils/validator.dart';
@@ -86,11 +82,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Expanded(
                         child: Center(
                           child: Container(
-                            constraints: const BoxConstraints(maxWidth: 540),
+                            constraints: BoxConstraints(
+                              maxWidth: 540,
+                              minHeight: size.height
+                            ),
                             child: Padding(
-                              padding: const EdgeInsets.all(32.0),
-                              child: Column(children: [
-                                SizedBox(height: size.height * 0.25),
+                              padding: const EdgeInsets.all(40.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                const SizedBox(height: 10),
                                 const PtitLogo(),
                                 const SizedBox(height: 24),
                                 Text(
@@ -227,7 +228,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: size.height * 0.25),
+                                const SizedBox(height: 10),
                               ]),
                             ),
                           ),
