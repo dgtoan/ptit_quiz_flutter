@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class OutlinedButtonIcon extends StatefulWidget {
-  final onPressed;
-  final icon;
-  final label;
-  final color;
-  final size;
+  final void Function()? onPressed;
+  final IconData? icon;
+  final String label;
+  final Color color;
+  final double? size;
 
   const OutlinedButtonIcon({
     super.key,
     required this.onPressed,
     required this.icon,
     required this.label,
-    this.color,
+    required this.color,
     this.size,
   });
 
