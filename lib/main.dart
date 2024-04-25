@@ -14,7 +14,7 @@ import 'presentation/blocs/app_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DependencyInjection.init();
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: 'dotenv');
 
   // debug
   // Bloc.observer = AppBlocObserver();

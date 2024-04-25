@@ -31,7 +31,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - .env
+    - dotenv
 
 flutter_native_splash:
   android_12:

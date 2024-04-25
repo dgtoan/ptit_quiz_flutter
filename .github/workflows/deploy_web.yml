@@ -24,8 +24,8 @@ jobs:
       with:
         channel: stable
         flutter-version: 3.19.6
-    - name: Create .env file
-      run: echo "API_URL=${{ inputs.api-url }}" > .env
+    - name: Create dotenv file
+      run: echo "API_URL=${{ inputs.api-url }}" > dotenv
     - run: flutter --version
     - run: flutter pub get
     - run: flutter build web --release --web-renderer html --base-href /quiz_web/
