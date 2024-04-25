@@ -30,7 +30,7 @@ jobs:
     - run: |
           cd build/web
           git init
-          git config --global user.email dgtoan28.com
+          git config --global user.email dgtoan28@gmail.com
           git config --global user.name dgtoan
           git status
           git remote add origin https://${{secrets.my_secret}}@github.com/dgtoan/quiz_web.git

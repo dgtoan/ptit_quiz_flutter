@@ -42,7 +42,11 @@ class AppRouter {
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) => AppSideNavigation(child: child),
+        pageBuilder: (context, state, child) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: AppSideNavigation(child: child),
+        ),
         routes: [
           GoRoute(
             path: AppRoutes.home,
