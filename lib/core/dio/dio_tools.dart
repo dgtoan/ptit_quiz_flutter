@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:ptit_quiz_frontend/di.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../../data/providers/local_data.dart';
 import '../../data/providers/remote_data.dart';
 
 class DioTools {
   static String getBaseUrl() {
-    return 'http://localhost:8080';
-    // return 'https://ptit-quiz.onrender.com';
+    return dotenv.get('API_URL', fallback: 'https://ptit-quiz.onrender.com');
   }
 
   static Dio get dio {
