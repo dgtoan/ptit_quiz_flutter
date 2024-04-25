@@ -26,8 +26,7 @@ jobs:
         flutter-version: 3.19.6
     - run: flutter --version
     - run: flutter pub get
-    - run: flutter build web --release
-    - run: echo ${{ secrets.my_secret }} ao ma qua
+    - run: flutter build web --release --web-renderer html --base-href /quiz_web/
     - run: |
           cd build/web
           git init
