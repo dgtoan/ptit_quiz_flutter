@@ -35,4 +35,20 @@ class AuthRepositoryImpl implements AuthRepository {
     await localData.saveRefreshToken(response['refresh_token']);
     return response;
   }
+
+  @override
+  Future<void> logout() async {
+    await localData.deleteToken();
+    await localData.deleteRefreshToken();
+  }
+
+  @override
+  Future<Map<String, dynamic>> validate() async {
+    return await remoteData.validate();
+  }
+
+  @override
+  Future<Map<String, dynamic>> validateAdmin() async {
+    return await remoteData.validateAdmin();
+  }
 }

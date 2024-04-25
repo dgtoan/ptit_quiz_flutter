@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../presentation/blocs/auth_bloc/auth_bloc.dart';
@@ -9,6 +10,7 @@ part 'app_routes.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+  // ignore: unused_field
   static final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static get appRouter => GoRouter(
@@ -41,32 +43,70 @@ class AppRouter {
       // App Routes
       GoRoute(
         path: AppRoutes.home,
-        builder: (context, state) => HomeScreen(),
+        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: const HomeScreen(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.exam,
-        builder: (context, state) => Placeholder(),
+        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: const Placeholder(),
+        ),
       ),
 
       // Auth Routes
       GoRoute(
         path: AppRoutes.login,
-        builder: (context, state) => LoginScreen(),
+        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: const LoginScreen(isAdmin: false),
+        ),
       ),
       GoRoute(
         path: AppRoutes.adminLogin,
-        builder: (context, state) => LoginScreen(isAdmin: true),
+        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: const LoginScreen(isAdmin: true),
+        ),
       ),
       GoRoute(
         path: AppRoutes.register,
-        builder: (context, state) => RegisterScreen(),
+        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: const RegisterScreen(),
+        ),
       ),
 
       // Invalid Route
       GoRoute(
         path: AppRoutes.invalidRoute,
-        builder: (context, state) => Placeholder(),
+        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: const Placeholder(),
+        ),
       ),
     ],
+  );
+}
+
+
+CustomTransitionPage buildCustomTransitionPage<T>({
+  required BuildContext context, 
+  required GoRouterState state, 
+  required Widget child,
+}) {
+  return CustomTransitionPage<T>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+      FadeTransition(opacity: animation, child: child)
   );
 }

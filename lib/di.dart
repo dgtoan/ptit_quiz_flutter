@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/dio/dio_tools.dart';
+import 'domain/usecases/validate.dart';
+import 'domain/usecases/validate_admin.dart';
 import 'presentation/blocs/app_bloc.dart';
 import 'presentation/blocs/exam_bloc/exam_bloc.dart';
 
@@ -13,6 +15,7 @@ import 'data/repositories/exam_repository_impl.dart';
 
 import 'domain/repositories/auth_repository.dart';
 import 'domain/usecases/login.dart';
+import 'domain/usecases/logout.dart';
 import 'domain/repositories/exam_repository.dart';
 import 'domain/usecases/admin_login.dart';
 import 'domain/usecases/create_exam.dart';
@@ -30,8 +33,11 @@ class DependencyInjection {
     sl.registerFactory<AuthBloc>(
       () => AuthBloc(
         login: sl(),
+        logout: sl(),
         register: sl(),
         adminLogin: sl(),
+        validate: sl(),
+        validateAdmin: sl(),
         authSubscription: DioTools.registerInceptor(sl<Dio>()),
       ),
     );
@@ -48,8 +54,11 @@ class DependencyInjection {
 
     // use case
     sl.registerLazySingleton<Login>(() => Login(authRepository: sl()));
+    sl.registerLazySingleton<Logout>(() => Logout(authRepository: sl()));
     sl.registerLazySingleton<Register>(() => Register(authRepository: sl()));
     sl.registerLazySingleton<AdminLogin>(() => AdminLogin(authRepository: sl())); 
+    sl.registerLazySingleton<Validate>(() => Validate(authRepository: sl()));
+    sl.registerLazySingleton<ValidateAdmin>(() => ValidateAdmin(authRepository: sl()));
     sl.registerLazySingleton<GetExams>(() => GetExams(examRepository: sl()));
     sl.registerLazySingleton<GetExam>(() => GetExam(examRepository: sl()));
     sl.registerLazySingleton<CreateExam>(() => CreateExam(examRepository: sl()));

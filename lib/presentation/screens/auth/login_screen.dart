@@ -7,6 +7,7 @@ import 'package:ptit_quiz_frontend/di.dart';
 import 'package:ptit_quiz_frontend/domain/entities/account.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_loading_animation.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_text_field.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/outline_button_icon.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/ptit_logo.dart';
@@ -295,12 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 if (state is AuthStateLoading)
-                  Container(
-                    color: Colors.black.withOpacity(0.5),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
+                  const AppLoadingAnimation()
               ],
             );
           },

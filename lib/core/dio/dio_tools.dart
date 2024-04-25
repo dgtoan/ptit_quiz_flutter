@@ -4,10 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:ptit_quiz_frontend/di.dart';
 
 import '../../data/providers/local_data.dart';
+import '../../data/providers/remote_data.dart';
 
 class DioTools {
   static String getBaseUrl() {
-    return 'https://ptit-quiz.onrender.com';
+    return 'http://localhost:8080';
+    // return 'https://ptit-quiz.onrender.com';
   }
 
   static Dio get dio {
@@ -35,10 +37,33 @@ class DioTools {
         return handler.next(options);
       },
 
-      onResponse: (response, handler) {
-        // if (response.statusCode == 401) {
-        //   streamController.add(false);
-        // }
+      onResponse: (response, handler) async {
+        if (response.statusCode == 401 || response.statusCode == 403) {
+          String refreshToken = DependencyInjection.sl<LocalData>().getRefreshToken();
+
+          try {
+            Map<String, dynamic> newToken = await DependencyInjection.sl<RemoteData>().refreshToken(refreshToken);
+            if (newToken['access_token'] != null) {
+              DependencyInjection.sl<LocalData>().saveToken(newToken['access_token']);
+              DependencyInjection.sl<LocalData>().saveRefreshToken(newToken['refresh_token']);
+              response.requestOptions.headers['access_token'] = newToken['access_token'];
+            }
+          } catch (e) {
+            return handler.reject(DioException(requestOptions: response.requestOptions, response: response));
+          }
+
+          try {
+            Map<String, dynamic> newTokenAdmin = await DependencyInjection.sl<RemoteData>().refreshTokenAdmin(refreshToken);
+            if (newTokenAdmin['access_token'] != null) {
+              DependencyInjection.sl<LocalData>().saveToken(newTokenAdmin['access_token']);
+              DependencyInjection.sl<LocalData>().saveRefreshToken(newTokenAdmin['refresh_token']);
+              response.requestOptions.headers['access_token'] = newTokenAdmin['access_token'];
+            }
+          } catch (e) {
+            return handler.reject(DioException(requestOptions: response.requestOptions, response: response));
+          }
+          return handler.resolve(await dio.fetch(response.requestOptions));
+        }
         return handler.next(response);
       },
 

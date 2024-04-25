@@ -23,7 +23,7 @@ class Validator {
     if (name.isEmpty) {
       return null;
     }
-    if (name.length < 3) {
+    if (!RegExp(r"^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$").hasMatch(name)) {
       return 'Please enter a valid name';
     }
     return null;

@@ -10,6 +10,10 @@ abstract class RemoteData {
   Future<Map<String, dynamic>> login(AccountModel user);
   Future<Map<String, dynamic>> adminLogin(AccountModel user);
   Future<Map<String, dynamic>> register(AccountModel user, ProfileModel profile);
+  Future<Map<String, dynamic>> validate();
+  Future<Map<String, dynamic>> validateAdmin();
+  Future<Map<String, dynamic>> refreshToken(String refreshToken);
+  Future<Map<String, dynamic>> refreshTokenAdmin(String refreshToken);
 
   Future<Exam> createExam(ExamModel exam);
   Future<Exam> updateExam(ExamModel exam);
@@ -28,7 +32,10 @@ class RemoteDataImpl implements RemoteData {
     final response = await dio.post("/auth/login", data: user.toJson());
     switch (response.statusCode) {
       case 200:
-        return {"access_token": response.data["access_token"], "refresh_token": response.data["refresh_token"]};
+        return {
+          "access_token": response.data["access_token"],
+          "refresh_token": response.data["refresh_token"],
+        };
       default:
         throw DioException(
           requestOptions: response.requestOptions,
@@ -43,7 +50,10 @@ class RemoteDataImpl implements RemoteData {
     final response = await dio.post("/admin/auth/login", data: user.toJson());
     switch (response.statusCode) {
       case 200:
-        return {"access_token": response.data["access_token"], "refresh_token": response.data["refresh_token"]};
+        return {
+          "access_token": response.data["access_token"],
+          "refresh_token": response.data["refresh_token"],
+        };
       default:
         throw DioException(
           requestOptions: response.requestOptions,
@@ -66,7 +76,78 @@ class RemoteDataImpl implements RemoteData {
     switch (response.statusCode) {
       case 200:
       case 204:
-        return {"access_token": response.data["access_token"], "refresh_token": response.data["refresh_token"]};
+        return {
+          "access_token": response.data["access_token"],
+          "refresh_token": response.data["refresh_token"],
+        };
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> validate() async {
+    final response = await dio.get("/auth/validate");
+    switch (response.statusCode) {
+      case 200:
+        return {"id": response.data["_id"]};
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> validateAdmin() async {
+    final response = await dio.get("/admin/auth/validate");
+    switch (response.statusCode) {
+      case 200:
+        return {"id": response.data["_id"]};
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> refreshToken(String refreshToken) async {
+    dio.options.headers["refresh_token"] = refreshToken;
+    final response = await dio.post("/auth/refresh_token");
+    switch (response.statusCode) {
+      case 200:
+        return {
+          "access_token": response.data["access_token"],
+          "refresh_token": response.data["refresh_token"],
+        };
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> refreshTokenAdmin(String refreshToken) async {
+    dio.options.headers["refresh_token"] = refreshToken;
+    final response = await dio.post("/admin/auth/refresh_token");
+    switch (response.statusCode) {
+      case 200:
+        return {
+          "access_token": response.data["access_token"],
+          "refresh_token": response.data["refresh_token"],
+        };
       default:
         throw DioException(
           requestOptions: response.requestOptions,
