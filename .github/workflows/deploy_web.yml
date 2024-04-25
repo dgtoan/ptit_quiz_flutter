@@ -1,0 +1,40 @@
+name: Deploy Web
+
+on:
+  workflow_dispatch:
+    inputs:
+      api-url:
+        description: 'api url'
+        default: 'https://ptit-quiz.onrender.com'
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build & Deploy
+    env:
+      API_URL: ${{ inputs.api-url }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.19.0
+    - run: flutter --version
+    - run: flutter pub get
+    - run: flutter build web --release
+    - run: |
+          cd build/web
+          git init
+          git config --global user.email dgtoan28.com
+          git config --global user.name dgtoan
+          git status
+          git remote add origin https://${{secrets.my_secret}}@github.com/dgtoan/quiz_web.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "update"
+          git push origin gh-pages -f
