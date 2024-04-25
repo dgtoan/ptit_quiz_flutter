@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 import '../../presentation/blocs/auth_bloc/auth_bloc.dart';
 
 import '../../presentation/screens/screen.dart';
+import '../../presentation/screens/widgets/widgets.dart';
 
 part 'app_routes.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-  // ignore: unused_field
   static final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static get appRouter => GoRouter(
@@ -40,24 +40,28 @@ class AppRouter {
       }
     },
     routes: [
-      // App Routes
-      GoRoute(
-        path: AppRoutes.home,
-        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
-          context: context,
-          state: state,
-          child: const HomeScreen(),
-        ),
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) => AppSideNavigation(child: child),
+        routes: [
+          GoRoute(
+            path: AppRoutes.home,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const HomeScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.exam,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const HomeScreen(),
+            ),
+          ),
+        ],
       ),
-      GoRoute(
-        path: AppRoutes.exam,
-        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
-          context: context,
-          state: state,
-          child: const Placeholder(),
-        ),
-      ),
-
       // Auth Routes
       GoRoute(
         path: AppRoutes.login,

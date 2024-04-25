@@ -6,31 +6,28 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/auth/login');
-                    },
-                    child: const Text('Login'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/auth/register');
-                    },
-                    child: const Text('Register'),
-                  ),
-                ]
-              )
-            ),
-          ],
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/auth/login');
+                },
+                child: const Text('Login'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/auth/register');
+                },
+                child: const Text('Register'),
+              ),
+            ]
+          )
         ),
-      ),
+      ],
     );
   }
 }

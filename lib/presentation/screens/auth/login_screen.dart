@@ -7,15 +7,11 @@ import 'package:ptit_quiz_frontend/di.dart';
 import 'package:ptit_quiz_frontend/domain/entities/account.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_loading_animation.dart';
-import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_text_field.dart';
-import 'package:ptit_quiz_frontend/presentation/screens/widgets/outline_button_icon.dart';
-import 'package:ptit_quiz_frontend/presentation/screens/widgets/ptit_logo.dart';
+import 'package:ptit_quiz_frontend/presentation/screens/widgets/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../core/utils/validator.dart';
-import '../widgets/devider_with_text.dart';
 
 class LoginScreen extends StatefulWidget {
   final bool isAdmin;

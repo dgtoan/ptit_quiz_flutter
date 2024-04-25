@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+// ignore: unused_import
 import 'package:ptit_quiz_frontend/core/constants/bloc_observer/bloc_observer.dart';
 import 'package:ptit_quiz_frontend/core/theme/color_schemes.g.dart';
 
@@ -14,6 +16,8 @@ void main() async {
 
   // debug
   // Bloc.observer = AppBlocObserver();
+
+  FlutterNativeSplash.remove();
   
   runApp(
     MultiBlocProvider(
