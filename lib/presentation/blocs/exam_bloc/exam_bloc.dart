@@ -72,7 +72,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
     emit(const ExamStateLoading());
     try {
       await _deleteExam(event.id);
-      emit(ExamStateDeleted());
+      emit(const ExamStateDeleted());
     } catch (e) {
       emit(ExamStateError(message: e.toString()));
     }
