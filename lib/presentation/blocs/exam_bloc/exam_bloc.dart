@@ -36,13 +36,15 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
     on<UpdateExamEvent>(_onUpdateExam);
     on<DeleteExamEvent>(_onDeleteExam);
     on<FetchExamEvent>(_onFetchExam);
+
+    add(const FetchExamsEvent());
   }
 
   Future<void> _onFetchExams(FetchExamsEvent event, Emitter<ExamState> emit) async {
     emit(const ExamStateLoading());
     try {
       final exams = await _getExams();
-      emit(ExamStateLoaded(exams: exams));
+      emit(ExamStateListLoaded(exams: exams));
     } catch (e) {
       emit(ExamStateError(message: e.toString()));
     }
@@ -82,7 +84,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
     emit(const ExamStateLoading());
     try {
       final response = await _getExam(event.id);
-      emit(ExamStateFetched(exam: response));
+      emit(ExamStateLoaded(exam: response));
     } catch (e) {
       emit(ExamStateError(message: e.toString()));
     }

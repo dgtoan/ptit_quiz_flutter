@@ -46,29 +46,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthStateError) {
-              toastification.show(
-                context: context,
-                type: ToastificationType.error,
-                style: ToastificationStyle.flatColored,
-                title: const Text('Register failed'),
-                description: Text(state.message),
-                alignment: Alignment.topRight,
-                autoCloseDuration: const Duration(seconds: 4),
-              );
+              Future.delayed(Duration.zero, () {
+                toastification.show(
+                  context: context,
+                  type: ToastificationType.error,
+                  style: ToastificationStyle.flatColored,
+                  title: const Text('Register failed'),
+                  description: Text(state.message),
+                  alignment: Alignment.topRight,
+                  autoCloseDuration: const Duration(seconds: 4),
+                  showProgressBar: false,
+                );
+              });
             } else if (
               state is AuthStateAuthenticated ||
               state is AuthStateAdminAuthenticated
             ) {
-              context.go(AppRoutes.home);
-              toastification.show(
-                context: context,
-                type: ToastificationType.success,
-                style: ToastificationStyle.flatColored,
-                title: const Text('Register successfully'),
-                description: const Text('Welcome to PTIT Quiz'),
-                alignment: Alignment.topRight,
-                autoCloseDuration: const Duration(seconds: 4),
-              );
+              if (state is AuthStateAuthenticated) {
+                context.go(AppRoutes.home);
+              } else if (state is AuthStateAdminAuthenticated) {
+                context.go(AppRoutes.adminExam);
+              }
+              Future.delayed(Duration.zero, () {
+                toastification.show(
+                  context: context,
+                  type: ToastificationType.success,
+                  style: ToastificationStyle.flatColored,
+                  title: const Text('Register successfully'),
+                  description: const Text('Welcome to PTIT Quiz'),
+                  alignment: Alignment.topRight,
+                  autoCloseDuration: const Duration(seconds: 4),
+                  showProgressBar: false,
+                );
+              });
             }
           },
           builder: (context, state) {
@@ -330,16 +340,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           );
     } else {
-      toastification.show(
-        context: context,
-        type: ToastificationType.error,
-        style: ToastificationStyle.flatColored,
-        title: const Text('Register failed'),
-        description: const Text('Please fill in all fields correctly'),
-        alignment: Alignment.topRight,
-        autoCloseDuration: const Duration(seconds: 3),
-        dragToClose: true,
-      );
+      Future.delayed(Duration.zero, () {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          style: ToastificationStyle.flatColored,
+          title: const Text('Register failed'),
+          description: const Text('Please fill in all fields correctly'),
+          alignment: Alignment.topRight,
+          autoCloseDuration: const Duration(seconds: 3),
+          showProgressBar: false,
+        );
+      });
     }
   }
 }

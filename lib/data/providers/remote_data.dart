@@ -122,7 +122,7 @@ class RemoteDataImpl implements RemoteData {
   @override
   Future<Map<String, dynamic>> refreshToken(String refreshToken) async {
     dio.options.headers["refresh_token"] = refreshToken;
-    final response = await dio.post("/auth/refresh_token");
+    final response = await dio.get("/auth/refresh_token");
     switch (response.statusCode) {
       case 200:
         return {
@@ -141,7 +141,7 @@ class RemoteDataImpl implements RemoteData {
   @override
   Future<Map<String, dynamic>> refreshTokenAdmin(String refreshToken) async {
     dio.options.headers["refresh_token"] = refreshToken;
-    final response = await dio.post("/admin/auth/refresh_token");
+    final response = await dio.get("/admin/auth/refresh_token");
     switch (response.statusCode) {
       case 200:
         return {
@@ -207,7 +207,7 @@ class RemoteDataImpl implements RemoteData {
     final response = await dio.get("/exams");
     switch (response.statusCode) {
       case 200:
-        return (response.data as List).map((e) => ExamModel.fromJson(e)).toList();
+        return (response.data["exams"] as List).map((e) => ExamModel.fromJson(e)).toList();
       default:
         throw DioException(
           requestOptions: response.requestOptions,

@@ -7,7 +7,6 @@ import 'package:ptit_quiz_frontend/core/constants/bloc_observer/bloc_observer.da
 import 'package:ptit_quiz_frontend/core/theme/color_schemes.g.dart';
 
 import 'di.dart';
-import 'presentation/blocs/exam_bloc/exam_bloc.dart';
 import 'core/router/app_router.dart';
 import 'presentation/blocs/app_bloc.dart';
 
@@ -26,6 +25,7 @@ void main() async {
       providers: [
         BlocProvider<AuthBloc>(create: (context) => DependencyInjection.sl<AuthBloc>()),
         BlocProvider<ExamBloc>(create: (context) => DependencyInjection.sl<ExamBloc>()),
+        BlocProvider<ExamDetailBloc>(create: (context) => DependencyInjection.sl<ExamDetailBloc>()),
       ],
       child: const MyApp(),
     )

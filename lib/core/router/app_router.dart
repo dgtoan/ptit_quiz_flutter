@@ -32,8 +32,16 @@ class AppRouter {
           AppRoutes.publicRoutes.contains(state.matchedLocation) ||
           state.matchedLocation == AppRoutes.initial
         ) {
-          return AppRoutes.home;
-        } else if (!AppRoutes.validRoutes.contains(state.matchedLocation)) {
+          if (authState is AuthStateAuthenticated) {
+            return AppRoutes.home;
+          } else if (authState is AuthStateAdminAuthenticated) {
+            return AppRoutes.adminExam;
+          }
+        } else if (
+          !AppRoutes.validRoutes.contains(state.matchedLocation) &&
+          !state.matchedLocation.startsWith(AppRoutes.exam) &&
+          !state.matchedLocation.startsWith(AppRoutes.result)
+        ) {
           return AppRoutes.invalidRoute;
         }
         return null;
@@ -53,7 +61,7 @@ class AppRouter {
             pageBuilder: (context, state) => buildCustomTransitionPage<void>(
               context: context,
               state: state,
-              child: const HomeScreen(),
+              child: const ExamScreen(),
             ),
           ),
           GoRoute(
@@ -61,10 +69,68 @@ class AppRouter {
             pageBuilder: (context, state) => buildCustomTransitionPage<void>(
               context: context,
               state: state,
-              child: const HomeScreen(),
+              child: const ExamScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.result,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const ResultScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.resultDetail,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const ResultDetailScreen(),
+            ),
+          ),
+          // Admin Routes
+          GoRoute(
+            path: AppRoutes.adminExam,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const AdminExamScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.adminResult,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const AdminResultScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.adminStatistics,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const AdminStatisticsScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.adminUser,
+            pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+              context: context,
+              state: state,
+              child: const AdminUserScreen(),
             ),
           ),
         ],
+      ),
+
+      GoRoute(
+        path: AppRoutes.examDetail,
+        pageBuilder: (context, state) => buildCustomTransitionPage<void>(
+          context: context,
+          state: state,
+          child: ExamDetailScreen(examId: state.pathParameters['examId']!),
+        ),
       ),
       // Auth Routes
       GoRoute(

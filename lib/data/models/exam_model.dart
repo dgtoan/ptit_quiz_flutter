@@ -4,22 +4,16 @@ class ExamModel extends Exam {
   ExamModel({
     required super.id,
     required super.name,
-    required super.subject,
     required super.duration,
-    required super.description,
-    required super.startTime,
-    required super.endTime,
+    required super.start,
   });
 
   factory ExamModel.fromJson(Map<String, dynamic> json) {
     return ExamModel(
       id: json['id'],
       name: json['name'],
-      subject: json['subject'],
       duration: json['duration'],
-      description: json['description'],
-      startTime: json['startTime'],
-      endTime: json['endTime'],
+      start: json['start'] ?? '',
     );
   }
 
@@ -27,11 +21,8 @@ class ExamModel extends Exam {
     return {
       'id': id,
       'name': name,
-      'subject': subject,
       'duration': duration,
-      'description': description,
-      'startTime': startTime,
-      'endTime': endTime,
+      'start': start,
     };
   }
 
@@ -39,11 +30,8 @@ class ExamModel extends Exam {
     return ExamModel(
       id: exam.id,
       name: exam.name,
-      subject: exam.subject,
       duration: exam.duration,
-      description: exam.description,
-      startTime: exam.startTime,
-      endTime: exam.endTime,
+      start: exam.start,
     );
   }
 }

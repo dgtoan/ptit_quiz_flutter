@@ -14,12 +14,20 @@ class ExamStateLoading extends ExamState {
   List<Object> get props => [];
 }
 
-class ExamStateLoaded extends ExamState {
+class ExamStateListLoaded extends ExamState {
   final List<Exam> exams;
-  const ExamStateLoaded({required this.exams});
+  const ExamStateListLoaded({required this.exams});
 
   @override
   List<Object> get props => [exams];
+}
+
+class ExamStateLoaded extends ExamState {
+  final Exam exam;
+  const ExamStateLoaded({required this.exam});
+
+  @override
+  List<Object> get props => [exam];
 }
 
 class ExamStateError extends ExamState {
@@ -51,12 +59,4 @@ class ExamStateDeleted extends ExamState {
 
   @override
   List<Object> get props => [];
-}
-
-class ExamStateFetched extends ExamState {
-  final Exam exam;
-  const ExamStateFetched({required this.exam});
-
-  @override
-  List<Object> get props => [exam];
 }

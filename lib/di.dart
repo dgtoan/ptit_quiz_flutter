@@ -6,7 +6,6 @@ import 'core/dio/dio_tools.dart';
 import 'domain/usecases/validate.dart';
 import 'domain/usecases/validate_admin.dart';
 import 'presentation/blocs/app_bloc.dart';
-import 'presentation/blocs/exam_bloc/exam_bloc.dart';
 
 import 'data/providers/remote_data.dart';
 import 'data/repositories/auth_repository_impl.dart';
@@ -49,6 +48,12 @@ class DependencyInjection {
         createExam: sl(),
         updateExam: sl(),
         deleteExam: sl(),
+      ),
+    );
+
+    sl.registerFactory<ExamDetailBloc>(
+      () => ExamDetailBloc(
+        getExam: sl(),
       ),
     );
 

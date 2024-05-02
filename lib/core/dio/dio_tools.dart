@@ -38,7 +38,7 @@ class DioTools {
       },
 
       onResponse: (response, handler) async {
-        if (response.statusCode == 401 || response.statusCode == 403) {
+        if (response.statusCode == 401) {
           String refreshToken = DependencyInjection.sl<LocalData>().getRefreshToken();
 
           try {

@@ -43,29 +43,39 @@ class _LoginScreenState extends State<LoginScreen> {
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthStateError) {
-              toastification.show(
-                context: context,
-                type: ToastificationType.error,
-                style: ToastificationStyle.flatColored,
-                title: const Text('Login failed'),
-                description: Text(state.message),
-                alignment: Alignment.topRight,
-                autoCloseDuration: const Duration(seconds: 3),
-              );
+              Future.delayed(Duration.zero, () {
+                toastification.show(
+                  context: context,
+                  type: ToastificationType.error,
+                  style: ToastificationStyle.flatColored,
+                  title: const Text('Login failed'),
+                  description: Text(state.message),
+                  alignment: Alignment.topRight,
+                  autoCloseDuration: const Duration(seconds: 3),
+                  showProgressBar: false,
+                );
+              });
             } else if (
               state is AuthStateAuthenticated ||
               state is AuthStateAdminAuthenticated
             ) {
-              context.go(AppRoutes.home);
-              toastification.show(
-                context: context,
-                type: ToastificationType.success,
-                style: ToastificationStyle.flatColored,
-                title: const Text('Login successful'),
-                description: const Text('Welcome to PTIT Quiz'),
-                alignment: Alignment.topRight,
-                autoCloseDuration: const Duration(seconds: 3),
-              );
+              if (state is AuthStateAuthenticated) {
+                context.go(AppRoutes.home);
+              } else if (state is AuthStateAdminAuthenticated) {
+                context.go(AppRoutes.adminExam);
+              }
+              Future.delayed(Duration.zero, () {
+                toastification.show(
+                  context: context,
+                  type: ToastificationType.success,
+                  style: ToastificationStyle.flatColored,
+                  title: const Text('Login successful'),
+                  description: const Text('Welcome to PTIT Quiz'),
+                  alignment: Alignment.topRight,
+                  autoCloseDuration: const Duration(seconds: 3),
+                  showProgressBar: false,
+                );
+              });
             }
           },
           builder: (context, state) {
@@ -211,74 +221,71 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ],
                                 ),
                                 const DeviderWithText(),
-                                Row(
+                                Flex(
+                                  direction: size.width > 800 ? Axis.horizontal : Axis.vertical,
                                   children: [
-                                    Expanded(
-                                      flex: 2,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            'Login with:',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 16),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              OutlinedButtonIcon(
-                                                onPressed: () {},
-                                                icon: Icons.g_mobiledata_outlined,
-                                                label: 'Google',
-                                                color: const Color(0xFFDB4437),
-                                                size: 36,
-                                              ),
-                                              const SizedBox(width: 16),
-                                              OutlinedButtonIcon(
-                                                onPressed: () {},
-                                                icon: Icons.facebook,
-                                                label: 'Facebook',
-                                                color: const Color(0xFF1877F2),
-                                              )
-                                            ],
-                                          ),
-                                        ],
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        'Login with:',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Column(
+                                      const SizedBox(height: 10),
+                                      Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          const Text(
-                                            'Login as:',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 16),
                                           OutlinedButtonIcon(
-                                            onPressed: () {
-                                              context.go(
-                                                widget.isAdmin
-                                                    ? AppRoutes.login
-                                                    : AppRoutes.adminLogin,
-                                              );
-                                            },
-                                            icon: widget.isAdmin
-                                                ? Icons.person_outline
-                                                : Icons.admin_panel_settings_outlined,
-                                            label: widget.isAdmin ? 'User' : 'Admin',
-                                            color: widget.isAdmin
-                                                ? Theme.of(context).colorScheme.secondary
-                                                : Colors.black,
+                                            onPressed: () {},
+                                            icon: Icons.g_mobiledata_outlined,
+                                            label: 'Google',
+                                            color: const Color(0xFFDB4437),
+                                            size: 36,
                                           ),
+                                          const SizedBox(width: 16),
+                                          OutlinedButtonIcon(
+                                            onPressed: () {},
+                                            icon: Icons.facebook,
+                                            label: 'Facebook',
+                                            color: const Color(0xFF1877F2),
+                                          )
                                         ],
                                       ),
+                                    ],
+                                  ),
+                                  if (size.width > 800) const Expanded(child: SizedBox())
+                                  else const SizedBox(height: 20),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        'Login as:',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      OutlinedButtonIcon(
+                                        onPressed: () {
+                                          context.go(
+                                            widget.isAdmin
+                                                ? AppRoutes.login
+                                                : AppRoutes.adminLogin,
+                                          );
+                                        },
+                                        icon: widget.isAdmin
+                                            ? Icons.person_outline
+                                            : Icons.admin_panel_settings_outlined,
+                                        label: widget.isAdmin ? 'User' : 'Admin',
+                                        color: widget.isAdmin
+                                            ? Theme.of(context).colorScheme.secondary
+                                            : Colors.black,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -385,16 +392,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ));
       }
     } else {
-      toastification.show(
-        context: context,
-        type: ToastificationType.error,
-        style: ToastificationStyle.flatColored,
-        title: const Text('Email or password are incorrect'),
-        description: const Text('Please re-enter your email and password'),
-        alignment: Alignment.topRight,
-        autoCloseDuration: const Duration(seconds: 3),
-        dragToClose: true,
-      );
+      Future.delayed(Duration.zero, () {
+        toastification.show(
+          context: context,
+          type: ToastificationType.error,
+          style: ToastificationStyle.flatColored,
+          title: const Text('Email or password are incorrect'),
+          description: const Text('Please re-enter your email and password'),
+          alignment: Alignment.topRight,
+          autoCloseDuration: const Duration(seconds: 3),
+          showProgressBar: false,
+        );
+      });
     }
   }
 }
