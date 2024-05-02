@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthStateError) {
-              Future.delayed(Duration.zero, () {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 toastification.show(
                   context: context,
                   type: ToastificationType.error,
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
               } else if (state is AuthStateAdminAuthenticated) {
                 context.go(AppRoutes.adminExam);
               }
-              Future.delayed(Duration.zero, () {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 toastification.show(
                   context: context,
                   type: ToastificationType.success,
@@ -392,7 +392,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ));
       }
     } else {
-      Future.delayed(Duration.zero, () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         toastification.show(
           context: context,
           type: ToastificationType.error,
