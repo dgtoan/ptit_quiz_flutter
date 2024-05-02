@@ -73,60 +73,58 @@ class _ExamDetailScreenState extends State<ExamDetailScreen> {
           ),
           body: Stack(
             children: [
-              Expanded(
-                child: Center(
-                  child: SizedBox(
-                    width: 1200,
-                    child: Stack(
-                      children: [
-                        SingleChildScrollView(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: 10000,
-                                    color: Colors.yellow,
-                                    child: const Center(
-                                      child: Text('Question Detail'),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              if (MediaQuery.of(context).size.width > 800)
-                                const SizedBox(width: 300),
-                            ],
-                          ),
-                        ),
-                        if (MediaQuery.of(context).size.width > 800)
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Container(
-                              width: 300,
-                              height: 450,
-                              constraints: BoxConstraints(
-                                maxHeight: MediaQuery.of(context).size.height,
-                              ),
+              Center(
+                child: SizedBox(
+                  width: 1200,
+                  child: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Row(
+                          children: [
+                            Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8.0,
-                                  right: 16.0,
-                                ),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Container(
-                                  color: Colors.blue,
+                                  height: 10000,
+                                  color: Colors.yellow,
                                   child: const Center(
-                                    child: Text('Question List'),
+                                    child: Text('Question Detail'),
                                   ),
                                 ),
                               ),
                             ),
+                            if (MediaQuery.of(context).size.width > 800)
+                              const SizedBox(width: 300),
+                          ],
+                        ),
+                      ),
+                      if (MediaQuery.of(context).size.width > 800)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            width: 300,
+                            height: 450,
+                            constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 8.0,
+                                right: 16.0,
+                              ),
+                              child: Container(
+                                color: Colors.blue,
+                                child: const Center(
+                                  child: Text('Question List'),
+                                ),
+                              ),
+                            ),
                           ),
-                      ],
-                    )
-                  ),
-                )
+                        ),
+                    ],
+                  )
+                ),
               ),
               if (state is ExamDetailLoading)
                 const AppLoadingAnimation(),
