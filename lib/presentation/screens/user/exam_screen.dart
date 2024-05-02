@@ -22,7 +22,7 @@ class ExamScreen extends StatelessWidget {
     return BlocConsumer<ExamBloc, ExamState> (
       listener: (context, state) {
         if (state is ExamStateError) {
-          Future.delayed(Duration.zero, () {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             toastification.show(
               context: context,
               type: ToastificationType.error,
@@ -42,84 +42,89 @@ class ExamScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is ExamStateListLoaded) {
+          state.exams.forEach((element) { print(element.name);});
           final ongoingExams = state.exams.where((exam) => exam.start != null && exam.start! < DateTime.now().millisecondsSinceEpoch).toList();
           final upcomingExams = state.exams.where((exam) => exam.start == null || exam.start! > DateTime.now().millisecondsSinceEpoch).toList();
           return SingleChildScrollView(
-            child: Expanded(
-              child: Center(
-                child: Container(
-                  constraints: BoxConstraints(
-                    maxWidth: 1000,
-                    minHeight: MediaQuery.of(context).size.height,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(40),
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: const Text(
-                            'Ongoing Exams',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxWidth: 1000,
+                        minHeight: MediaQuery.of(context).size.height,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: const Text(
+                                'Ongoing Exams',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 10),
+                            if (ongoingExams.isNotEmpty)
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: ongoingExams.length,
+                                itemBuilder: (context, index) {
+                                  final exam = ongoingExams[index];
+                                  return ExamCard(exam: exam, onPressed: (){context.go('/exam/${exam.id}');},);
+                                },
+                              )
+                            else
+                              const Center(
+                                child: Text(
+                                  'No ongoing exams',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                            const SizedBox(height: 20),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: const Text(
+                                'Upcoming Exams',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            if (upcomingExams.isNotEmpty)
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: upcomingExams.length,
+                                itemBuilder: (context, index) {
+                                  final exam = upcomingExams[index];
+                                  return ExamCard(exam: exam, onPressed: null);
+                                },
+                              )
+                            else
+                              const Center(
+                                child: Text(
+                                  'No upcoming exams',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                          ],
                         ),
-                        const SizedBox(height: 10),
-                        if (ongoingExams.isNotEmpty)
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: ongoingExams.length,
-                            itemBuilder: (context, index) {
-                              final exam = ongoingExams[index];
-                              return ExamCard(exam: exam, onPressed: (){context.go('/exam/${exam.id}');},);
-                            },
-                          )
-                        else
-                          const Center(
-                            child: Text(
-                              'No ongoing exams',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                        const SizedBox(height: 20),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: const Text(
-                            'Upcoming Exams',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        if (upcomingExams.isNotEmpty)
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: upcomingExams.length,
-                            itemBuilder: (context, index) {
-                              final exam = upcomingExams[index];
-                              return ExamCard(exam: exam, onPressed: null);
-                            },
-                          )
-                        else
-                          const Center(
-                            child: Text(
-                              'No upcoming exams',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                      ],
+                      )
                     ),
                   )
                 ),
-              )
+              ],
             ),
           );
         } else {
