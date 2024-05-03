@@ -45,3 +45,4 @@ app.*.map.json
 
 # Environment configuration
 dotenv
+!/build/web/assets/dotenv

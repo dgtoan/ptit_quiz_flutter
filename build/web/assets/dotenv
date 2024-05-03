@@ -1,0 +1,3 @@
+# API_URL=http://localhost:8080
+API_URL=https://ptit-quiz.onrender.com
+# flutter build web --release --web-renderer html --base-href /quiz_web/
