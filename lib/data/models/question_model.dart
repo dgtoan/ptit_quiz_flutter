@@ -4,8 +4,16 @@ class QuestionModel extends Question {
   QuestionModel({
     required super.content,
     required super.answers,
-    required super.correctAnswer,
+    super.correctAnswer,
   });
+
+  factory QuestionModel.fromEntity(Question question) {
+    return QuestionModel(
+      content: question.content,
+      answers: question.answers,
+      correctAnswer: question.correctAnswer,
+    );
+  }
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
     return QuestionModel(
@@ -15,11 +23,27 @@ class QuestionModel extends Question {
     );
   }
 
+  static List<QuestionModel>? fromJsonList(List<dynamic> json) {
+    return json.map((question) => QuestionModel.fromJson(question)).toList();
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'content': content,
       'answers': answers,
       'correctAnswer': correctAnswer,
     };
+  }
+
+  static List<Map<String, dynamic>>? toJsonList(List<QuestionModel>? questions) {
+    return questions?.map((question) => question.toJson()).toList();
+  }
+
+  static List<Question> toEntityList(List<QuestionModel> questions) {
+    return questions.map((question) => question).toList();
+  }
+
+  static List<QuestionModel>? fromEntityList(List<Question>? questions) {
+    return questions?.map((question) => QuestionModel.fromEntity(question)).toList();
   }
 }

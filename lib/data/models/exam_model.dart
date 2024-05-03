@@ -1,3 +1,5 @@
+import 'package:ptit_quiz_frontend/data/models/question_model.dart';
+
 import '../../domain/entities/exam.dart';
 
 class ExamModel extends Exam {
@@ -6,6 +8,7 @@ class ExamModel extends Exam {
     required super.name,
     required super.duration,
     required super.start,
+    super.questions,
   });
 
   factory ExamModel.fromJson(Map<String, dynamic> json) {
@@ -14,6 +17,7 @@ class ExamModel extends Exam {
       name: json['name'],
       duration: json['duration'],
       start: json['start'] ?? '',
+      questions: (json['questions'] != null) ? QuestionModel.fromJsonList(json['questions']) : null,
     );
   }
 
@@ -23,6 +27,7 @@ class ExamModel extends Exam {
       'name': name,
       'duration': duration,
       'start': start,
+      'questions': QuestionModel.toJsonList(QuestionModel.fromEntityList(questions)),
     };
   }
 
