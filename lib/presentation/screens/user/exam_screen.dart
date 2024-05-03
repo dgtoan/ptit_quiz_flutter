@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
 import 'package:ptit_quiz_frontend/presentation/blocs/exam_bloc/exam_bloc.dart';
+import 'package:ptit_quiz_frontend/presentation/screens/widgets/widgets.dart';
 import 'package:toastification/toastification.dart';
 
 /*
@@ -39,7 +40,7 @@ class ExamScreen extends StatelessWidget {
       builder: (context, state) {
         if (state is ExamStateLoading) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: AppLoadingAnimation(),
           );
         } else if (state is ExamStateListLoaded) {
           final ongoingExams = state.exams.where((exam) => exam.start != null && exam.start! < DateTime.now().millisecondsSinceEpoch).toList();
