@@ -42,7 +42,6 @@ class ExamScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is ExamStateListLoaded) {
-          state.exams.forEach((element) { print(element.name);});
           final ongoingExams = state.exams.where((exam) => exam.start != null && exam.start! < DateTime.now().millisecondsSinceEpoch).toList();
           final upcomingExams = state.exams.where((exam) => exam.start == null || exam.start! > DateTime.now().millisecondsSinceEpoch).toList();
           return SingleChildScrollView(
