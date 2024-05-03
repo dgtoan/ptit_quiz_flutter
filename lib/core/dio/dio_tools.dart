@@ -9,7 +9,7 @@ import '../../data/providers/remote_data.dart';
 
 class DioTools {
   static String getBaseUrl() {
-    return dotenv.get('API_URL', fallback: 'https://ptit-quiz.onrender.com');
+    return dotenv.get('API_URL', fallback: 'https://quiz-api.dgtoan.id.vn');
   }
 
   static Dio get dio {

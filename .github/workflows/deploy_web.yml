@@ -5,7 +5,7 @@ on:
     inputs:
       api-url:
         description: 'api url'
-        default: 'https://ptit-quiz.onrender.com'
+        default: 'https://quiz-api.dgtoan.id.vn'
         required: true
         type: string
 
