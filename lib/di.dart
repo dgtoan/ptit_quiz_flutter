@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ptit_quiz_frontend/core/utils/ticker.dart';
+import 'package:ptit_quiz_frontend/domain/usecases/submit_exam.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/dio/dio_tools.dart';
@@ -54,7 +56,16 @@ class DependencyInjection {
     sl.registerFactory<ExamDetailBloc>(
       () => ExamDetailBloc(
         getExam: sl(),
+        submitExam: sl(),
       ),
+    );
+
+    sl.registerFactory<AnswersCubit>(
+      () => AnswersCubit(),
+    );
+
+    sl.registerFactory<TimerCubit>(
+      () => TimerCubit(ticker: const Ticker()),
     );
 
     // use case
@@ -67,6 +78,7 @@ class DependencyInjection {
     sl.registerLazySingleton<GetExams>(() => GetExams(examRepository: sl()));
     sl.registerLazySingleton<GetExam>(() => GetExam(examRepository: sl()));
     sl.registerLazySingleton<CreateExam>(() => CreateExam(examRepository: sl()));
+    sl.registerLazySingleton<SubmitExam>(() => SubmitExam(examRepository: sl()));
     sl.registerLazySingleton<UpdateExam>(() => UpdateExam(examRepository: sl()));
     sl.registerLazySingleton<DeleteExam>(() => DeleteExam(examRepository: sl()));
 

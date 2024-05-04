@@ -26,6 +26,8 @@ void main() async {
         BlocProvider<AuthBloc>(create: (context) => DependencyInjection.sl<AuthBloc>()),
         BlocProvider<ExamBloc>(create: (context) => DependencyInjection.sl<ExamBloc>()),
         BlocProvider<ExamDetailBloc>(create: (context) => DependencyInjection.sl<ExamDetailBloc>()),
+        BlocProvider<AnswersCubit>(create: (context) => DependencyInjection.sl<AnswersCubit>()),
+        BlocProvider<TimerCubit>(create: (context) => DependencyInjection.sl<TimerCubit>()),
       ],
       child: const MyApp(),
     )

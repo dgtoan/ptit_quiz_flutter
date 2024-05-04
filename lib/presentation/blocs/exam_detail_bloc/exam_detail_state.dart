@@ -22,6 +22,17 @@ final class ExamDetailLoaded extends ExamDetailState {
   List<Object> get props => [exam];
 }
 
+final class ExamDetailSubmitted extends ExamDetailState {
+  final Map<String, dynamic> result;
+
+  const ExamDetailSubmitted({
+    required this.result,
+  });
+
+  @override
+  List<Object> get props => [result];
+}
+
 final class ExamDetailError extends ExamDetailState {
   final String message;
 

@@ -20,6 +20,7 @@ abstract class RemoteData {
   Future<Exam> deleteExam(String id);
   Future<List<ExamModel>> getExams();
   Future<Exam> getExam(String id);
+  Future<Map<String, dynamic>> submitExam(String id, List<int> answers);
 }
 
 class RemoteDataImpl implements RemoteData {
@@ -219,10 +220,28 @@ class RemoteDataImpl implements RemoteData {
 
   @override
   Future<ExamModel> getExam(String id) async {
-    final response = await dio.get("/exams/$id");
+    final response = await dio.get("/exams/detail/$id");
     switch (response.statusCode) {
       case 200:
         return ExamModel.fromJson(response.data);
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> submitExam(String id, List<int> answers) async {
+    final response = await dio.post(
+      "/exams/$id/submit",
+      data: {"answers": answers},
+    );
+    switch (response.statusCode) {
+      case 200:
+        return response.data;
       default:
         throw DioException(
           requestOptions: response.requestOptions,
