@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptit_quiz_frontend/core/router/app_router.dart';
+import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_dialog.dart';
 import 'package:toastification/toastification.dart';
 
 import '../../../domain/entities/question.dart';
@@ -179,30 +180,7 @@ class _ExamDetailScreenState extends State<ExamDetailScreen> {
   }
 
   void _showSubmitDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Submit exam'),
-          content: const Text('Are you sure you want to submit the exam?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                onSubmitted();
-              },
-              child: const Text('Submit'),
-            ),
-          ],
-        );
-      },
-    );
+    AppDialog.showSubmitDialog(context, onSubmitted);
   }
 
   void onSubmitted() {

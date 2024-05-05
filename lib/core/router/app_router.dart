@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
 
 import '../../presentation/screens/screen.dart';
+import '../../presentation/screens/widgets/app_dialog.dart';
 import '../../presentation/screens/widgets/widgets.dart';
 
 part 'app_routes.dart';
@@ -131,6 +131,12 @@ class AppRouter {
           state: state,
           child: ExamDetailScreen(examId: state.pathParameters['examId']!),
         ),
+        onExit: (BuildContext context) async {
+          if (context.read<ExamDetailBloc>().state is! ExamDetailSubmitted) {
+            return await AppDialog.showLeavePageDialog(context) ?? false;
+          }
+          return true;
+        },
       ),
       // Auth Routes
       GoRoute(
