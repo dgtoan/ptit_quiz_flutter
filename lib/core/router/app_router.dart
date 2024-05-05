@@ -85,7 +85,7 @@ class AppRouter {
             pageBuilder: (context, state) => buildCustomTransitionPage<void>(
               context: context,
               state: state,
-              child: const ResultDetailScreen(),
+              child: ResultDetailScreen(resultId: state.pathParameters['resultId'] ?? ''),
             ),
           ),
           // Admin Routes
