@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:ptit_quiz_frontend/core/utils/ticker.dart';
+import 'package:ptit_quiz_frontend/domain/usecases/get_exam_result.dart';
+import 'package:ptit_quiz_frontend/domain/usecases/get_exam_results.dart';
 import 'package:ptit_quiz_frontend/domain/usecases/submit_exam.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,6 +62,18 @@ class DependencyInjection {
       ),
     );
 
+    sl.registerFactory<ResultBloc>(
+      () => ResultBloc(
+        getExamResults: sl(),
+      ),
+    );
+
+    sl.registerFactory<ResultDetailBloc>(
+      () => ResultDetailBloc(
+        getExamResult: sl(),
+      ),
+    );
+
     sl.registerFactory<AnswersCubit>(
       () => AnswersCubit(),
     );
@@ -79,6 +93,8 @@ class DependencyInjection {
     sl.registerLazySingleton<GetExam>(() => GetExam(examRepository: sl()));
     sl.registerLazySingleton<CreateExam>(() => CreateExam(examRepository: sl()));
     sl.registerLazySingleton<SubmitExam>(() => SubmitExam(examRepository: sl()));
+    sl.registerLazySingleton<GetExamResult>(() => GetExamResult(examRepository: sl()));
+    sl.registerLazySingleton<GetExamResults>(() => GetExamResults(examRepository: sl()));
     sl.registerLazySingleton<UpdateExam>(() => UpdateExam(examRepository: sl()));
     sl.registerLazySingleton<DeleteExam>(() => DeleteExam(examRepository: sl()));
 

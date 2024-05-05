@@ -7,20 +7,29 @@ import '../models/profile_model.dart';
 import '../../domain/entities/exam.dart';
 
 abstract class RemoteData {
+  // User Auth
   Future<Map<String, dynamic>> login(AccountModel user);
-  Future<Map<String, dynamic>> adminLogin(AccountModel user);
   Future<Map<String, dynamic>> register(AccountModel user, ProfileModel profile);
   Future<Map<String, dynamic>> validate();
-  Future<Map<String, dynamic>> validateAdmin();
   Future<Map<String, dynamic>> refreshToken(String refreshToken);
+
+  // Admin Auth
+  Future<Map<String, dynamic>> adminLogin(AccountModel user);
+  Future<Map<String, dynamic>> validateAdmin();
   Future<Map<String, dynamic>> refreshTokenAdmin(String refreshToken);
 
+  // Exam
   Future<Exam> createExam(ExamModel exam);
   Future<Exam> updateExam(ExamModel exam);
   Future<Exam> deleteExam(String id);
   Future<List<ExamModel>> getExams();
   Future<Exam> getExam(String id);
   Future<Map<String, dynamic>> submitExam(String id, List<int> answers);
+  Future<List<Map<String, dynamic>>> getExamResults();
+  Future<Map<String, dynamic>> getExamResult(String id);
+
+  // Admin Exam
+  
 }
 
 class RemoteDataImpl implements RemoteData {
@@ -239,6 +248,36 @@ class RemoteDataImpl implements RemoteData {
       "/exams/$id/submit",
       data: {"answers": answers},
     );
+    switch (response.statusCode) {
+      case 200:
+        return response.data;
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getExamResults() async {
+    final response = await dio.get("/exams/results");
+    switch (response.statusCode) {
+      case 200:
+        return (response.data["examResults"] as List).cast<Map<String, dynamic>>();
+      default:
+        throw DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: jsonEncode(response.data),
+        );
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getExamResult(String id) async {
+    final response = await dio.get("/exams/results/$id");
     switch (response.statusCode) {
       case 200:
         return response.data;

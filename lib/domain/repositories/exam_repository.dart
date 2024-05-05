@@ -7,4 +7,6 @@ abstract class ExamRepository {
   Future<List<Exam>> getExams();
   Future<Exam> getExam(String id);
   Future<Map<String, dynamic>> submitExam(String id, List<int> answers);
+  Future<List<Map<String, dynamic>>> getExamResults();
+  Future<Map<String, dynamic>> getExamResult(String id);
 }

@@ -37,4 +37,14 @@ class ExamRepositoryImpl implements ExamRepository {
   Future<Map<String, dynamic>> submitExam(String id, List<int> answers) async {
     return await remoteData.submitExam(id, answers);
   }
+
+  @override
+  Future<List<Map<String, dynamic>>> getExamResults() async {
+    return await remoteData.getExamResults();
+  }
+
+  @override
+  Future<Map<String, dynamic>> getExamResult(String id) async {
+    return await remoteData.getExamResult(id);
+  }
 }
