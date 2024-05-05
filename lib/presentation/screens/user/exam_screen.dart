@@ -6,15 +6,6 @@ import 'package:ptit_quiz_frontend/presentation/blocs/exam_bloc/exam_bloc.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/widgets.dart';
 import 'package:toastification/toastification.dart';
 
-/*
-class Exam {
-  final String id;
-  final String name;
-  final int duration;
-  final int? start;
-  }
-*/
-
 class ExamScreen extends StatelessWidget {
   const ExamScreen({super.key});
 
