@@ -19,8 +19,13 @@ class ExamDetailBloc extends Bloc<ExamDetailEvent, ExamDetailState> {
     _getExam = getExam;
     _submitExam = submitExam;
 
+    on<ExamDetailInitialEvent>(_onInitial);
     on<ExamDetailGetEvent>(_onGetExam);
     on<ExamDetailSubmitEvent>(_onSubmitExam);
+  }
+
+  Future<void> _onInitial(ExamDetailInitialEvent event, Emitter<ExamDetailState> emit) async {
+    emit(ExamDetailInitial());
   }
 
   Future<void> _onGetExam(ExamDetailGetEvent event, Emitter<ExamDetailState> emit) async {

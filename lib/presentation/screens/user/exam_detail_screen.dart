@@ -214,6 +214,12 @@ class _ExamDetailScreenState extends State<ExamDetailScreen> {
           ),
         );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ExamDetailBloc>().add(ExamDetailInitialEvent());
+  }
 }
 
 class QuestionList extends StatelessWidget {

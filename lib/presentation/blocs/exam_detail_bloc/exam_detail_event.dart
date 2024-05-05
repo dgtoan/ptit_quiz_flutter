@@ -7,6 +7,8 @@ sealed class ExamDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
+final class ExamDetailInitialEvent extends ExamDetailEvent {}
+
 final class ExamDetailGetEvent extends ExamDetailEvent {
   final String examId;
 
