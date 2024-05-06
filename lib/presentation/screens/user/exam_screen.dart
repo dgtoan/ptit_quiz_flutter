@@ -1,13 +1,25 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ptit_quiz_frontend/domain/entities/exam.dart';
-import 'package:ptit_quiz_frontend/presentation/blocs/exam_bloc/exam_bloc.dart';
+import 'package:ptit_quiz_frontend/presentation/blocs/app_bloc.dart';
+import 'package:ptit_quiz_frontend/presentation/screens/widgets/app_dialog.dart';
 import 'package:ptit_quiz_frontend/presentation/screens/widgets/widgets.dart';
 import 'package:toastification/toastification.dart';
 
-class ExamScreen extends StatelessWidget {
-  const ExamScreen({super.key});
+class ExamScreen extends StatefulWidget {
+  const ExamScreen({super.key, this.isAdmin = false});
+
+  final bool isAdmin;
+
+  @override
+  State<ExamScreen> createState() => _ExamScreenState();
+}
+
+class _ExamScreenState extends State<ExamScreen> {
+  late List<Exam> exams;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +39,9 @@ class ExamScreen extends StatelessWidget {
             );
           });
         }
+        if (state is ExamStateListLoaded) {
+          exams = state.exams;
+        }
       },
       builder: (context, state) {
         if (state is ExamStateLoading) {
@@ -34,8 +49,8 @@ class ExamScreen extends StatelessWidget {
             child: AppLoadingAnimation(),
           );
         } else if (state is ExamStateListLoaded) {
-          final ongoingExams = state.exams.where((exam) => exam.start != null && exam.start! < DateTime.now().millisecondsSinceEpoch).toList();
-          final upcomingExams = state.exams.where((exam) => exam.start == null || exam.start! > DateTime.now().millisecondsSinceEpoch).toList();
+          final ongoingExams = exams.where((exam) => exam.start != null && exam.start! < DateTime.now().millisecondsSinceEpoch).toList();
+          final upcomingExams = exams.where((exam) => exam.start == null || exam.start! > DateTime.now().millisecondsSinceEpoch).toList();
           return SingleChildScrollView(
             child: Row(
               children: [
@@ -50,6 +65,69 @@ class ExamScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(40),
                         child: Column(
                           children: [
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  if (widget.isAdmin)
+                                    ...[
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.add,
+                                          color: Colors.grey,
+                                        ),
+                                        onPressed: () {
+                                          context.read<ExamCubit>().setExam(const Exam.empty());
+                                          AppDialog.showManageExamDialog(context, () { });
+                                        },
+                                      ),
+                                      const SizedBox(width: 16),
+                                    ],
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.cached,
+                                      color: Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      context.read<ExamBloc>().add(const FetchExamsEvent());
+                                    },
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Container(
+                                    width: min(MediaQuery.of(context).size.width * 0.4, 240),
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.2),
+                                          spreadRadius: 1,
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: TextField(
+                                      onChanged: (value) => searchExams(value),
+                                      decoration: const InputDecoration(
+                                        icon: Padding(
+                                          padding: EdgeInsets.only(left: 16),
+                                          child: Icon(
+                                            Icons.search,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        hintText: 'Search exams',
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
                             Container(
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -69,7 +147,18 @@ class ExamScreen extends StatelessWidget {
                                 itemCount: ongoingExams.length,
                                 itemBuilder: (context, index) {
                                   final exam = ongoingExams[index];
-                                  return ExamCard(exam: exam, onPressed: (){context.go('/exam/${exam.id}');},);
+                                  return ExamCard(
+                                    exam: exam,
+                                    onPressed: widget.isAdmin 
+                                      ? () {
+                                        context.read<ExamCubit>().setExam(exam);
+                                        AppDialog.showManageExamDialog(context, () { }, isEdit: true);
+                                      }
+                                      : () {
+                                        context.go('/exam/${exam.id}');
+                                      },
+                                    isAdmin: widget.isAdmin
+                                  );
                                 },
                               )
                             else
@@ -99,7 +188,16 @@ class ExamScreen extends StatelessWidget {
                                 itemCount: upcomingExams.length,
                                 itemBuilder: (context, index) {
                                   final exam = upcomingExams[index];
-                                  return ExamCard(exam: exam, onPressed: null);
+                                  return ExamCard(
+                                    exam: exam,
+                                    onPressed: widget.isAdmin 
+                                      ? () {
+                                        context.read<ExamCubit>().setExam(exam);
+                                        AppDialog.showManageExamDialog(context, () { }, isEdit: true);
+                                      }
+                                      : null,
+                                    isAdmin: widget.isAdmin
+                                  );
                                 },
                               )
                             else
@@ -129,6 +227,21 @@ class ExamScreen extends StatelessWidget {
       },
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ExamBloc>().add(const FetchExamsEvent());
+    exams = [];
+  }
+
+  void searchExams(String query) {
+    List<Exam> stateExams = (context.read<ExamBloc>().state as ExamStateListLoaded).exams;
+    setState(() {
+      exams = stateExams.where((exam) => exam.name.toLowerCase().contains(query.toLowerCase())).toList();
+    });
+  }
+
 }
 
 class ExamCard extends StatelessWidget {
@@ -136,10 +249,12 @@ class ExamCard extends StatelessWidget {
     super.key,
     required this.exam,
     required this.onPressed,
+    this.isAdmin = false,
   });
 
   final Exam exam;
   final Function()? onPressed;
+  final bool isAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -209,10 +324,10 @@ class ExamCard extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: isAdmin ? const EdgeInsets.all(12) : const EdgeInsets.symmetric(vertical: 12),
                     child: Center(
                       child: Text(
-                        'On Going',
+                        isAdmin ? 'Edit' : 'On Going',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 16,
