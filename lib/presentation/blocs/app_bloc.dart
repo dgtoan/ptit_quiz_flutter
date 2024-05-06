@@ -5,3 +5,4 @@ export 'result_detail_bloc/result_detail_bloc.dart';
 export 'exam_detail_bloc/exam_detail_bloc.dart';
 export 'cubits/answers_cubit.dart';
 export 'cubits/timer_cubit.dart';
+export 'cubits/exam_cubit.dart';
