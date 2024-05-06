@@ -120,19 +120,19 @@ class _AppSideNavigationState extends State<AppSideNavigation> {
                         const NavigationRailDestination(
                           icon: Icon(Icons.assignment_outlined),
                           selectedIcon: Icon(Icons.assignment),
-                          label: Text('Exam Management'),
+                          label: Text('Exam'),
                         ),
                       if (state is AuthStateAdminAuthenticated)
                         const NavigationRailDestination(
                           icon: Icon(Icons.people_outlined),
                           selectedIcon: Icon(Icons.people),
-                          label: Text('User Management'),
+                          label: Text('User'),
                         ),
                       if (state is AuthStateAdminAuthenticated)
                         const NavigationRailDestination(
                           icon: Icon(Icons.assessment_outlined),
                           selectedIcon: Icon(Icons.assessment),
-                          label: Text('Result Management'),
+                          label: Text('Result'),
                         ),
                       if (state is AuthStateAdminAuthenticated)
                         const NavigationRailDestination(
