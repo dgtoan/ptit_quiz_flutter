@@ -30,6 +30,7 @@ void main() async {
         BlocProvider<ResultDetailBloc>(create: (context) => DependencyInjection.sl<ResultDetailBloc>()),
         BlocProvider<AnswersCubit>(create: (context) => DependencyInjection.sl<AnswersCubit>()),
         BlocProvider<TimerCubit>(create: (context) => DependencyInjection.sl<TimerCubit>()),
+        BlocProvider<ExamCubit>(create: (context) => DependencyInjection.sl<ExamCubit>()),
       ],
       child: const MyApp(),
     )

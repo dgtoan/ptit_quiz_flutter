@@ -82,6 +82,10 @@ class DependencyInjection {
       () => TimerCubit(ticker: const Ticker()),
     );
 
+    sl.registerFactory<ExamCubit>(
+      () => ExamCubit(),
+    );
+
     // use case
     sl.registerLazySingleton<Login>(() => Login(authRepository: sl()));
     sl.registerLazySingleton<Logout>(() => Logout(authRepository: sl()));
