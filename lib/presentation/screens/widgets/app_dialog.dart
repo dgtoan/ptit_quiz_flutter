@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ptit_quiz_frontend/presentation/screens/user/manage_exam_dialog.dart';
 
 class AppDialog {
   static Future<bool?> showLeavePageDialog(BuildContext context) {
@@ -53,6 +54,40 @@ class AppDialog {
                 onSubmitted();
               },
               child: const Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static showManageExamDialog(BuildContext context, VoidCallback onManage, {bool isEdit = false}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.transparent,
+          content: Container(
+            width: 600,
+            constraints: const BoxConstraints(
+              maxHeight: 600,
+            ),
+            child: ManageExamDialog(isEdit: isEdit),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                onManage();
+              },
+              child: Text(isEdit ? 'Update' : 'Create'),
             ),
           ],
         );
