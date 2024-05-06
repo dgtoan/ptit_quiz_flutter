@@ -94,7 +94,7 @@ class AppRouter {
             pageBuilder: (context, state) => buildCustomTransitionPage<void>(
               context: context,
               state: state,
-              child: const AdminExamScreen(),
+              child: const ExamScreen(isAdmin: true,),
             ),
           ),
           GoRoute(
